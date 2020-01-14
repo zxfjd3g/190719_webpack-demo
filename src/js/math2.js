@@ -7,3 +7,5 @@ function reduce2(a, b) {
   return a - b
 }
 exports.reduce2 = reduce2
+
+class B {}
