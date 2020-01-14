@@ -1,6 +1,8 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 function resolve(dir) {
   return path.resolve(__dirname, dir)
@@ -16,11 +18,22 @@ module.exports = {
   // 出口
   output: {
     path: resolve('dist'), // 所有打包文件根目录
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: '/', // 所有生成url链接左侧以/开头
   },
   // 模块加载器
   module: {
     rules: [
+      {
+        enforce: "pre", // 前置loader, 最先执行
+        test: /\.js$/,
+        // exclude: /node_modules/,
+        include: resolve('src'),
+        loader: "eslint-loader",
+        options: {
+          formatter: require("eslint-friendly-formatter")
+        }
+      },
       // 处理ES6==>ES5
       {
         test: /\.js/,
@@ -70,17 +83,31 @@ module.exports = {
       // 处理css
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'] // 从下往上从右往左    style(css(css文件))
+        use: [
+          MiniCssExtractPlugin.loader, 
+          'css-loader', 
+          'postcss-loader'
+        ] // 从下往上从右往左    style(css(css文件))
       },
       // 处理less
       {
         test: /\.less$/,
-        use: ['style-loader', 'css-loader', 'less-loader']
+        use: [
+          MiniCssExtractPlugin.loader, 
+          'css-loader', 
+          'postcss-loader', 
+          'less-loader'
+        ]
       },
       // 处理stylus
       {
         test: /\.(styl|stylus)$/,
-        use: ['style-loader', 'css-loader', 'stylus-loader'] 
+        use: [
+          MiniCssExtractPlugin.loader,  // 代替stlye-loader
+          'css-loader', 
+          'postcss-loader', 
+          'stylus-loader'
+        ] 
       },
 
     ]
@@ -92,11 +119,20 @@ module.exports = {
       template: 'public/index.html'
     }),
     // 清除打包文件夹dist
-    new CleanWebpackPlugin(['dist'])
+    new CleanWebpackPlugin(['dist']),
+    // 从js抽取css单独打包
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].css'
+    }),
   ],
 
   // 开发服务器
   devServer: {
     open: true, // 自动打开浏览器访问
+  },
+
+  // 优化配置
+  optimization: {
+    minimizer: [new OptimizeCSSAssetsPlugin()]
   }
 }
