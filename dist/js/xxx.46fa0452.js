@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[4],{B5GV:function(n,t,o){"use strict";function u(){alert(".....")}o.r(t),o.d(t,"study",(function(){return u}))}}]);
+//# sourceMappingURL=xxx.46fa0452.js.map

@@ -1,6 +1,9 @@
 // import '@babel/polyfill' // 会自动打包使用的语法(且浏览器没有实现)
 import $ from 'jquery'
 import axios from 'axios'
+// import moment from 'moment'
+import { format } from 'date-fns'
+import {min} from 'lodash-es'
 import logo from './assets/image/logo.png'
 import './assets/css/test1.css'
 import './assets/css/test2.less'
@@ -44,7 +47,17 @@ axios.get('/test/3').then(response => {
 */
 // import {study} from './js/asyncModule'
 $img2.click(() => {
-  import('./js/asyncModule').then(asyncModule => {
+  import(/* webpackChunkName: "xxx" */ './js/asyncModule').then(asyncModule => {
     asyncModule.study()
   })
 })
+$img3.click(() => {
+  import(/* webpackChunkName: "yyy" */ './js/asyncModule2').then(asyncModule => {
+    asyncModule.study2()
+  })
+})
+
+
+// console.log(moment().format('YYYY-HH-DD HH:mm:ss'))
+console.log(format(new Date(2014, 1, 11), 'yyyy-MM-dd'))
+console.log(min([2, 1, 3]))

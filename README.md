@@ -88,9 +88,12 @@
             对同步模块包使用: preload
     4). 缓存
         打包文件hash化
-        hash
-        chunkhash
-        contenthash
+        用于生成hash值的标识名称
+            hash
+            chunkhash
+            contenthash
+        module,chunk与bundle的关系
+            
     5). tree-shaking(摇树)
         删除模块中向外暴露但未被使用的代码
         条件1: ES6的export暴露
@@ -103,3 +106,17 @@
     7). 打包文件分析
 
 ## 打包优化
+    加快打包速度
+        1). loader增加include匹配特定条件
+        2). 合理配置extensions扩展名
+        3). 设置resolve.alias字段
+        4). dll预打包
+        5). 加快loader处理
+    提升开发调试体验
+        1). eslint代码规范检查
+        2). eslint代码规范检查
+        3). sourcemap 源码映射
+        4). live-reload / hot-reload
+        5). proxy解决ajax跨域
+        6). mock后台接口
+        7). postcss

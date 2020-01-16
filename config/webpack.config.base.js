@@ -3,13 +3,15 @@
 */
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const PreloadWebpackPlugin = require('preload-webpack-plugin')
 const {resolve} = require('./utils')
 
 
 module.exports = {
   // 入口
   entry: {
-    app: resolve('src/index.js')
+    app: resolve('src/index.js'),
+    other: resolve('src/other.js')
   },
   // 出口
   output: {
@@ -44,7 +46,7 @@ module.exports = {
           loader: 'url-loader',
           options: {
             limit: 1024*5, //把小于 5kb 的文件转成 Base64 的格式
-            name: 'img/[name].[ext]', // 内变化hash变化
+            name: 'img/[name].[hash:8].[ext]', // 内变化hash变化
           }
         }
       },
@@ -96,5 +98,28 @@ module.exports = {
       template: 'public/index.html',
       filename: 'index.html'
     }),
+
+    // 针对异步加载的包用prefetch
+    new PreloadWebpackPlugin({
+      rel: 'prefetch',
+      include: 'asyncChunks',
+      as(entry) {
+        if (/\.css$/.test(entry)) return 'style';
+        if (/\.woff$/.test(entry)) return 'font';
+        if (/\.png$/.test(entry)) return 'image';
+        return 'script';
+      }
+    }),
+    // 针对同步的包使用preload
+    new PreloadWebpackPlugin({
+      rel: 'preload',
+      include: ['app', 'vendors~app','runtime'],
+      as(entry) {
+        if (/\.css$/.test(entry)) return 'style';
+        if (/\.woff$/.test(entry)) return 'font';
+        if (/\.png$/.test(entry)) return 'image';
+        return 'script';
+      }
+    })
   ],
 }

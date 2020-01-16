@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[5],{NmxO:function(n,t,o){"use strict";function u(){alert(".....222")}o.r(t),o.d(t,"study2",(function(){return u}))}}]);
+//# sourceMappingURL=yyy.74a81065.js.map
