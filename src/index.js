@@ -1,5 +1,6 @@
 // import '@babel/polyfill' // 会自动打包使用的语法(且浏览器没有实现)
 import $ from 'jquery'
+import axios from 'axios'
 import logo from './assets/image/logo.png'
 import './assets/css/test1.css'
 import './assets/css/test2.less'
@@ -31,3 +32,19 @@ $('body').append($img2).append($img3)
 /* eslint-disable no-undef */
 // console.log(a)
 // var b = 2
+
+axios.get('/test/3').then(response => {
+  console.log(response.data.data)
+})
+
+/* 
+  测试: 异步/懒加载
+      拆分单独打包: code spliting 代码分割
+      不立即执行import(), 而是在一定条件下执行
+*/
+// import {study} from './js/asyncModule'
+$img2.click(() => {
+  import('./js/asyncModule').then(asyncModule => {
+    asyncModule.study()
+  })
+})

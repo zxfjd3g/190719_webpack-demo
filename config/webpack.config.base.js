@@ -1,18 +1,12 @@
-const path = require('path')
-const webpack = require('webpack')
+/* 
+开发环境与生产环境的公用配置
+*/
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const {resolve} = require('./utils')
 
-function resolve(dir) {
-  return path.resolve(__dirname, dir)
-}
 
 module.exports = {
-  // 模式
-  // mode: 'production',
   // 入口
   entry: {
     app: resolve('src/index.js')
@@ -20,7 +14,6 @@ module.exports = {
   // 出口
   output: {
     path: resolve('dist'), // 所有打包文件根目录
-    filename: 'bundle.js',
     publicPath: '/', // 所有生成url链接左侧以/开头
   },
   // 模块加载器
@@ -80,38 +73,7 @@ module.exports = {
             name: 'static/media/[name].[hash:8].[ext]'
           }
         }
-      },
-
-      // 处理css
-      {
-        test: /\.css$/,
-        use: [
-          MiniCssExtractPlugin.loader, 
-          'css-loader', 
-          'postcss-loader'
-        ] // 从下往上从右往左    style(css(css文件))
-      },
-      // 处理less
-      {
-        test: /\.less$/,
-        use: [
-          MiniCssExtractPlugin.loader, 
-          'css-loader', 
-          'postcss-loader', 
-          'less-loader'
-        ]
-      },
-      // 处理stylus
-      {
-        test: /\.(styl|stylus)$/,
-        use: [
-          MiniCssExtractPlugin.loader,  // 代替stlye-loader
-          'css-loader', 
-          'postcss-loader', 
-          'stylus-loader'
-        ] 
-      },
-
+      }
     ]
   },
   // 插件
@@ -134,25 +96,5 @@ module.exports = {
       template: 'public/index.html',
       filename: 'index.html'
     }),
-    // 清除打包文件夹dist
-    new CleanWebpackPlugin(['dist']),
-    // 从js抽取css单独打包
-    new MiniCssExtractPlugin({
-      filename: 'css/[name].css'
-    }),
-    // 压缩css
-    new OptimizeCSSAssetsPlugin(),
-    // HMR插件
-    new webpack.HotModuleReplacementPlugin()
   ],
-
-  // 开发服务器
-  devServer: {
-    open: true, // 自动打开浏览器访问
-    hot: true, // 开启HMR
-  },
-
-  // 优化配置
-  optimization: {
-  }
 }

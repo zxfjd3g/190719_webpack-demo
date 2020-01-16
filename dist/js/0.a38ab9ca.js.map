@@ -1,0 +1,1 @@
+{"version":3,"file":"js/0.a38ab9ca.js","sources":["webpack:///./src/js/asyncModule.js"],"sourcesContent":["export function study () {\r\n  alert('.....')\r\n}"],"mappings":";;;;;;;;;;AAAA;AAAA;AAAA;AACA;AACA;;;;A","sourceRoot":""}

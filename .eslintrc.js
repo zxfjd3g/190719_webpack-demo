@@ -17,5 +17,6 @@ module.exports = {
   },
   "rules": {
     "no-unused-vars": "off", // 关闭
+    "no-undef": "off", // 关闭
   }
 };
