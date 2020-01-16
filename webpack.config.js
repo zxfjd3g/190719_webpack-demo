@@ -1,8 +1,10 @@
 const path = require('path')
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 function resolve(dir) {
   return path.resolve(__dirname, dir)
@@ -114,9 +116,23 @@ module.exports = {
   },
   // 插件
   plugins: [
+    new CopyWebpackPlugin([
+      {
+        from: resolve('public/css'), // 拷贝的指定文件夹
+        to: 'css', // dist下目标文件夹
+        ignore: ['.*']
+      }
+    ]),
     // 向页面中插入引入打包的js/css的代码
     new HtmlWebpackPlugin({
-      template: 'public/index.html'
+      minify: {
+        // 压缩 HTML 文件
+        removeComments: true, // 移除 HTML 中的注释
+        collapseWhitespace: true, // 删除空白符与换行符
+        minifyCSS: true // 压缩内联 css
+      },
+      template: 'public/index.html',
+      filename: 'index.html'
     }),
     // 清除打包文件夹dist
     new CleanWebpackPlugin(['dist']),
@@ -124,15 +140,19 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'css/[name].css'
     }),
+    // 压缩css
+    new OptimizeCSSAssetsPlugin(),
+    // HMR插件
+    new webpack.HotModuleReplacementPlugin()
   ],
 
   // 开发服务器
   devServer: {
     open: true, // 自动打开浏览器访问
+    hot: true, // 开启HMR
   },
 
   // 优化配置
   optimization: {
-    minimizer: [new OptimizeCSSAssetsPlugin()]
   }
 }

@@ -10,7 +10,7 @@ import { add } from './js/math'
 const {add2} = require('./js/math2')
 
 
-// console.log(add(1, 2), add2(3, 4))
+console.log(add(1, 2), add2(3, 4))
 console.log('hello webpack44444!')
 
 /* 测试: ES6==>ES5 */
@@ -27,6 +27,7 @@ console.log('image', logo)
 const $img2 = $('<img>').attr('src', logo).addClass('avatar2')
 const $img3 = $('<img>').attr('src', logo).addClass('avatar3')
 $('body').append($img2).append($img3)
+
 /* eslint-disable no-undef */
-console.log(a)
-var b = 2
+// console.log(a)
+// var b = 2

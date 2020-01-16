@@ -8,4 +8,5 @@ function reduce2(a, b) {
 }
 exports.reduce2 = reduce2
 
-class B {}
+// 在commonjs模块中, 不能使用class
+// class B {}
